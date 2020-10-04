@@ -2,7 +2,7 @@
 
 The Sense Hat is an add-on board for the Raspberry Pi, made especially for the Astro Pi competition. The board allows you to make measurements of temperature, humidity, pressure, and orientation (Gyroscope, Accelerometer, Magnetometer) and to output information using its built-in LED matrix.
 
-The following repository has either files for the Sense Hat in Pythin and for the data receiver in Rust where the attach to Tangle via Streams happens. 
+The following repository has either files for the Sense Hat in Python and for the data receiver in Rust where the attach to Tangle via Streams happens. 
 
 - pi3sensehat-python (Python code to send sensors data)
 - pi3sensehat-rust (Rust code to start a listener server)
@@ -81,14 +81,12 @@ Make sure you also have the build dependencies installed, if not run:
 `sudo apt install libssl-dev`  
 `sudo apt update`  
 
-## Installing XDK2Streams
+## Installing the Streams Server
 
 Navigate to the **pi3sensehat-rust** directory and edit the **config.json** file to define your device name (it must match what you set on the Sense Hat config).
-There you can also change ports and the IOTA Full Node used. 
+There you can also change ports and the IOTA Full Node used.  
 
   
-Configure the Streams Gateway on the ***config.json*** file   
-
 ```
 {
     "device_name": "PI3SH", 
@@ -124,7 +122,7 @@ In a separate window start a subscriber using the Channle Root printed by the Ga
 `cargo run --release --example subscriber <your_channel_root> `  
 
 
-### Testing 
+### Testing without sensors
 
 To send data to the server you can use Postman, or like in this case cURL, make sure the port is the same as in the config.json file:  
 `  
@@ -159,6 +157,6 @@ curl --location --request POST '127.0.0.1:8080/sensor_data'
     "timestamp": "1558511111"  
 }'  
 `   
-IMPORTANT: The device will be authenticated through the "device" field in the request (in this case XDK_HTTP), this has to match what was set as device_name in the config.json on the Gateway (see Configuration section above)!  
+IMPORTANT: The device will be authenticated through the "device" field in the request (in this case PI3SH), this has to match what was set as device_name in the config.json on the Gateway (see Configuration section above)!  
   
 After a few seconds you should now see the data beeing recieved by the Subscriber!
