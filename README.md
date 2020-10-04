@@ -1,61 +1,73 @@
-# XDK2Streams HTTP Protocol WITH SD CARD
+# Sense Hat on Raspberry Pi3/4
 
-HTTP is a common protocol to transfer data and files over the network. The XDK supports HTTP natively and offers two modules to make HTTP requests. This guide will provide an introduction to both of them and will demonstrate how to use them to make GET and POST request.
+The Sense Hat is an add-on board for the Raspberry Pi, made especially for the Astro Pi competition. The board allows you to make measurements of temperature, humidity, pressure, and orientation (Gyroscope, Accelerometer, Magnetometer) and to output information using its built-in LED matrix.
 
-The following repository has either files for the Bosch XDK 110 and for the data receiver in Rust where the attach to Tangle via Streams happens. 
+The following repository has either files for the Sense Hat in Pythin and for the data receiver in Rust where the attach to Tangle via Streams happens. 
 
-**This package is a variation of the HTTP one that allows to use WLAN SSID, Password, Host and other needed values from a config file on a micro sd card, which makes possible to use the XDK in diferent networks without need to recompile (you just change values in the config file and you are ready to go)**
+- pi3sensehat-python (Python code to send sensors data)
+- pi3sensehat-rust (Rust code to start a listener server)
 
-- xdk2streams-c (C Code to build and flash to your XDK)
-- xdk2mam-rust (Rust code to start a listener server)
+# Instructions for the Sense Hat
 
-# Instructions for the XDK110
+## Requirements:
 
-## Requirements
-In order to be able to run the code on this repo you will to [download XDK Workbench](https://xdk.bosch-connectivity.com/software-downloads), have a XDK 110 and insall Node on the computer you are going to use as listener server.
+- Raspberry Pi3/4
+- Sense Hat [Sense Hat](https://www.raspberrypi.org/products/sense-hat/)
 
-## Flashing your XDK: wifi and sensors configuration
-Open XDK Workbench and go to File -> Import. Choose General > Projects from Folder or Archive and select the folder ***xdk2mam-c***. Accept to import project. 
+## Installing the Sense Hat
 
-### Clear, Build and Flash
-Open XDK Workbench and go to File -> Import. Choose General > Projects from Folder or Archive and select the folder **xdk2mam-c**. Accept to import project. Once project is imported, right click on **xdk2mam** folder in your Workbench Project Explorer and select **Clean project**. When the clean is done, repat and select **Build Project**. This process can take some minutes depending on your hardware and you should see any problems at the Workbench Console.
-
-Finally, once the project has been built, connect your XDK 110 via USB and click the ***Flash*** button to install the software on the board. If everything went fine, you should be able to see the sensor data on your console.
-
-### Editing config data
-
-Open the **config.cfg** file on your computer and change the values to match your WLAN data, host, port and the sensors you want to use.
+Ensure your APT package list is up-to-date
 
 ```
-DEVICE_NAME=enter-your-device-id
-WLAN_SSDI=enter-your-wifi-ssid
-WLAN_PSK=enter-your-wifi-password
-DEST_SERVER_HOST=192.168.0.4
-DEST_SERVER_PORT=8080
-INTER_REQUEST_INTERVAL=3000
-DEST_POST_PATH=/sensor_data
-ENVIROMENTAL=YES
-ACCELEROMETER=YES
-GYROSCOPE=YES
-INERTIAL=YES
-LIGHT=YES
-MAGNETOMETER=YES
-ACOUSTIC=YES
+sudo apt update
 ```
 
-Save the values, extract the micro SD card and carefully insert it into the XDK SD slot (contacts up). 
-Turn on the XDK and you are good to go! 
-If everything went fine the XDK110 should now be sending its sensors data to the given destination server. 
+Next, install the sense-hat package which will ensure the kernel is up-to-date, enable I2C, and install the necessary libraries and programs
 
+```
+sudo apt install sense-hat
+```
+
+Finally, a reboot may be required if I2C was disabled or the kernel was not up-to-date prior to the install:
+
+```
+sudo reboot
+```
+
+## Getting IOT2TANGLE Python code
+
+We will clone this repository to get the Python and Rust code needed. 
+
+```
+git clone https://github.com/iot2tangle/pi3-sensehat.git
+```
+
+Head to the **pi3sensehat-python** directory and edit the **config.py** file to define your device name, which sensors you will use, the endpoint and interval.
+Here we will be using the Raspberry Pi to get the data from the Sense Hat sensors and also to send it to the Tangle so we use 127.0.0.1. 
+Note that you could change this to point to a remote server running the Rust server.
+
+```
+# Device name
+device_id = 'PI3SH'
+
+# Select sensors to use 1 = use | 0 = skip
+enviromental = 1
+gyroscope = 1
+accelerometer = 1
+magnetometer = 1
+
+# Select relay interval
+relay = 30
+
+# Define endpoint
+endpoint = 'http://127.0.0.1:8080/sensor_data'
+```
+
+**IMPORTANT:** remember the device_id you set here, it will have to match the one we will set later on the Rust server.
 
 # Instructions for the Streams Gateway
 
-
 ## Preparation
-
-Clone this repo and navigate to the http-sdcard/xdk2streams-streams where the Rust code is
-
-`git clone https://github.com/iot2tangle/xdk2streams.git`
 
 Install Rust if you don't have it already, find the instructions here https://www.rust-lang.org/tools/install
 
@@ -70,16 +82,15 @@ Make sure you also have the build dependencies installed, if not run:
 
 ## Installing XDK2Streams
 
-Download XDK2Streams and navigate to the xdk2streams-rust folder:  
+Navigate to the **pi3sensehat-rust** directory and edit the **config.json** file to define your device name (it must match what you set on the Sense Hat config).
+There you can also change ports and the IOTA Full Node used. 
 
-`git clone https://github.com/iot2tangle/xdk2streams`  
-`cd http-sdcard/xdk2streams-rust`  
   
 Configure the Streams Gateway on the ***config.json*** file   
 
 ```
 {
-    "device_name": "XDK_HTTP", 
+    "device_name": "PI3SH", 
     "port": 8080, 
     "node": "https://nodes.iota.cafe:443", 
     "mwm": 14,    
@@ -87,10 +98,7 @@ Configure the Streams Gateway on the ***config.json*** file
 }
 ```
 
-**Set the *device_name* to the value specified in the XDK110 configuration file as DEVICE_NAME**  
-Change *port, node, mwm, local_pow* if needed. 
-
-## Runnig the Examples:  
+## Start the Streams Server
 
 ### Sending messages to the Tangle
 
@@ -122,7 +130,7 @@ To send data to the server you can use Postman, or like in this case cURL, make 
 curl --location --request POST '127.0.0.1:8080/sensor_data'   
 --header 'Content-Type: application/json'   
 --data-raw '{
-    "xdk2mam": [
+    "iot2tangle": [
         {
             "sensor": "Gyroscope",
             "data": [
@@ -146,7 +154,7 @@ curl --location --request POST '127.0.0.1:8080/sensor_data'
             ]
         }
     ],  
-    "device": "XDK_HTTP",  
+    "device": "PI3SH",  
     "timestamp": "1558511111"  
 }'  
 `   
