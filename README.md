@@ -70,7 +70,7 @@ endpoint = 'http://127.0.0.1:8080/sensor_data'
 
 ## Preparation
 
-Install Rust if you don't have it already, find the instructions here https://www.rust-lang.org/tools/install
+Install Rust if you don't have it already. More info about Rust here https://www.rust-lang.org/tools/install
 
 `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
 
