@@ -37,7 +37,7 @@ while True:
 
 
     # Json open
-    build_json  = '{"IOT2TANGLE-Pi3B+SenseHat":'
+    build_json  = '{"xdk2mam":'
 
     # If Enviromental
     if config.enviromental:
@@ -59,14 +59,24 @@ while True:
         build_json += '{"sensor":"Magnetometer","data":[{"x":"' + str(x_compass) + '"},{"y":"'+str(y_compass)+'"},{"z":"'+str(z_compass)+'"}]}'
 
     # Json close
-    build_json += '],"device":"SenseHat","timestamp":"'+str(timestamp)+'"}'
+    build_json += '],"device":"'+str(config.device_id)+'","timestamp":"'+str(timestamp)+'"}'
 
-    # Build Json from string
-    #headers = {"Content-Type": "application/json"}
-    toJson = json.loads(build_json, object_pairs_hook=OrderedDict)
+    # Set Json headers
+    headers = {"Content-Type": "application/json"}
     
     # Send Data to Json server
-    requests.post(config.endpoint, json=toJson)
+    try:
         
-    # Interval     
-    time.sleep(config.relay)
+        r = requests.post(config.endpoint, data=build_json, headers=headers)
+        r.raise_for_status()
+        print (":: Sending datasets ::")
+        print("--------------------------------------------------------")
+        print(build_json)  
+    
+    except :
+        
+        print ("No server listening at " + str(config.endpoint))
+    
+
+        # Interval
+        time.sleep(config.relay)
