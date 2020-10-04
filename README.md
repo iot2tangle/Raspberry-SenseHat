@@ -107,7 +107,8 @@ Run the Streams Gateway:
 
 This starts the server which will forward messages from the XDK to the Tangle  
   
-The Output will be something like this:  
+The Output will be something like this: 
+
 `>> Starting.... `  
 `>> Channel root: "ab3de895ec41c88bd917e8a47d54f76d52794d61ff4c4eb3569c31f619ee623d0000000000000000"`  
 `>> To Start the Subscriber run: `  
@@ -125,6 +126,7 @@ In a separate window start a subscriber using the Channle Root printed by the Ga
 ### Testing without sensors
 
 To send data to the server you can use Postman, or like in this case cURL, make sure the port is the same as in the config.json file:  
+
 `  
 curl --location --request POST '127.0.0.1:8080/sensor_data'   
 --header 'Content-Type: application/json'   
@@ -157,6 +159,7 @@ curl --location --request POST '127.0.0.1:8080/sensor_data'
     "timestamp": "1558511111"  
 }'  
 `   
+
 IMPORTANT: The device will be authenticated through the "device" field in the request (in this case PI3SH), this has to match what was set as device_name in the config.json on the Gateway (see Configuration section above)!  
   
 After a few seconds you should now see the data beeing recieved by the Subscriber!
