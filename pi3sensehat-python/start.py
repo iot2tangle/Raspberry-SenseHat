@@ -37,7 +37,7 @@ while True:
 
 
     # Json open
-    build_json  = '{"xdk2mam":'
+    build_json  = '{"iot2tangle":'
 
     # If Enviromental
     if config.enviromental:
@@ -77,6 +77,5 @@ while True:
         
         print ("No server listening at " + str(config.endpoint))
     
-
         # Interval
         time.sleep(config.relay)
