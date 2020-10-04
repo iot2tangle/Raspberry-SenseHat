@@ -9,7 +9,7 @@ The following repository has either files for the Sense Hat in Pythin and for th
 
 # Instructions for the Sense Hat
 
-## Requirements
+## Requirements:
 
 - Raspberry Pi3/4
 - Sense Hat [Sense Hat](https://www.raspberrypi.org/products/sense-hat/)
