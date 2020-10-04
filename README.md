@@ -12,10 +12,11 @@ The following repository has either files for the Sense Hat in Pythin and for th
 ## Requirements:
 
 - Raspberry Pi3/4
-- Sense Hat [Sense Hat](https://www.raspberrypi.org/products/sense-hat/)
+- [Sense Hat](https://www.raspberrypi.org/products/sense-hat/)
 
 ## Installing the Sense Hat
 
+We asume you already have a Raspberry Pi running Raspbian/Raspberry OS connected to the internet. 
 Ensure your APT package list is up-to-date
 
 ```
