@@ -29,12 +29,6 @@ Next, install the sense-hat package which will ensure the kernel is up-to-date, 
 sudo apt install sense-hat
 ```
 
-Finally, a reboot may be required if I2C was disabled or the kernel was not up-to-date prior to the install:
-
-```
-sudo reboot
-```
-
 ## Getting IOT2TANGLE Python code
 
 We will clone this repository to get the Python and Rust code needed. 
@@ -43,7 +37,7 @@ We will clone this repository to get the Python and Rust code needed.
 git clone https://github.com/iot2tangle/Raspberry-SenseHat.git
 ```
 
-Head to the **http** directory and edit the **config.py** file to define your device name, which sensors you will use, the endpoint and interval.
+Head to the **Raspberry-SenseHat/http** directory and edit the **config.py** file to define your device name, which sensors you will use, the endpoint and interval.
 Here we will be using the Raspberry Pi to get the data from the Sense Hat sensors and also to send it to the Tangle so we use 127.0.0.1. 
 Note that you could change this to point to a remote server running the Rust server.
 
@@ -65,6 +59,10 @@ endpoint = 'http://127.0.0.1:8080/sensor_data'
 ```
 
 **IMPORTANT:** remember the device_id you set here, it will have to match the one we will set later on the Rust server.
+
+Save the config file and run the Python server in charge of getting the sensors information and send them to the Streams Gateway
+
+`python server.py`
 
 # Setting up the Streams Gateway
 
@@ -109,17 +107,11 @@ Run the Streams Gateway:
 
 `cargo run --release`  
 
-This starts the server which will forward messages from the XDK to the Tangle  
-  
-The Output will be something like this: 
+This will compile and start the Streams Gateway. Note that the compilation process may take from 3 to 30 minutes depending on the device you are using as host.
+You will only go through the compilation once and any restart done later will take a few seconds to have the Gateway working.
 
-`>> Starting.... `  
-`>> Channel root: "ab3de895ec41c88bd917e8a47d54f76d52794d61ff4c4eb3569c31f619ee623d0000000000000000"`  
-`>> To Start the Subscriber run: `  
-  
-`>> cargo run --release --example subscriber "ab3de895ec41c88bd917e8a47d54f76d52794d61ff4c4eb3569c31f619ee623d0000000000000000" `  
-  
-`>> Listening on http://0.0.0.0:8080`  
+![Streams Gateway receiving SenseHat data](https://iot2tangle.io/assets/screenshots/PiSenseHatSend.png)
+
 
 ### Reading messages from the Tangle
 
