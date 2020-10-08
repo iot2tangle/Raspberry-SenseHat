@@ -1,5 +1,5 @@
 # Device name
-device_id = 'XDK_HTTP'
+device_id = 'DEVICE_ID'
 
 # Select sensors to use 1 = use | 0 = skip
 enviromental = 1
