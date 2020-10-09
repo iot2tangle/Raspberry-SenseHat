@@ -43,7 +43,7 @@ Note that you could change this to point to a remote server running the Rust ser
 
 ```
 # Device name
-device_id = 'PI3SH'
+device_id = 'PISH'
 
 # Select sensors to use 1 = use | 0 = skip
 enviromental = 1
@@ -91,7 +91,7 @@ There you can also change ports and the IOTA Full Node used.
   
 ```
 {
-    "device_name": "PI3SH", 
+    "device_name": "PISH", 
     "port": 8080, 
     "node": "https://nodes.iota.cafe:443", 
     "mwm": 14,    
@@ -160,7 +160,7 @@ curl --location --request POST '127.0.0.1:8080/sensor_data'
 }'  
 `   
 
-IMPORTANT: The device will be authenticated through the "device" field in the request (in this case PI3SH), this has to match what was set as device_name in the config.json on the Gateway (see Configuration section above)!  
+IMPORTANT: The device will be authenticated through the **device id** field in the request (in this case PISH), this has to match what was set as device_name in the config.json on the Gateway (see Configuration section above)!  
   
 After a few seconds you should now see the data beeing recieved by the Subscriber!
 
