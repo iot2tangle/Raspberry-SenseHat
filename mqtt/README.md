@@ -141,19 +141,15 @@ This will compile and start the Streams Gateway. Note that the compilation proce
 
 You will only go through the compilation once and any restart done later will take a few seconds to have the Gateway working.
 
-![Streams Gateway receiving SenseHat data](https://iot2tangle.io/assets/screenshots/PiSenseHatSend.png)
+![Streams Gateway receiving XDK110 data](https://iot2tangle.io/assets/screenshots/XDK110MQTTGW.png)
+
 *The Gateway starts by giving us the channel id that will allow subscribers to access the channel data.*
 
 ### Reading messages from the Tangle
 
-In a separate console start a subscriber using the Channel Id printed by the Gateway (see example above):  
+You can now head to the I2T Streams Explorer and search for the published datasets using the channel Id provided by the Gateway
 
-```
-cargo run --release --example subscriber <your_channel_root> 
-```
-
-![Streams Gateway receiving SenseHat data](https://iot2tangle.io/assets/screenshots/PiSenseHatGet.png)
-
+![Streams Gateway receiving SenseHat data](https://iot2tangle.io/assets/screenshots/XDKMQTTEXPLORER.png)
 
 IMPORTANT: The device will be authenticated through the **device id** field in the request (in this case PISH), this has to match what was set as device_name in the config.json on the Gateway (see Configuration section above)!  
   
