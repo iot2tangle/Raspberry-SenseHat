@@ -62,7 +62,9 @@ endpoint = 'http://127.0.0.1:8080/sensor_data'
 
 Save the config file and run the Python server in charge of getting the sensors information and send them to the Streams Gateway
 
-`python server.py`
+```
+python server.py
+```
 
 # Setting up the Streams Gateway
 
@@ -70,20 +72,26 @@ Save the config file and run the Python server in charge of getting the sensors 
 
 Install Rust if you don't have it already. More info about Rust here https://www.rust-lang.org/tools/install
 
-`curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
+```
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
 
 Make sure you also have the build dependencies installed, if not run:  
 
-`sudo apt install build-essential`  
-`sudo apt install pkg-config`  
-`sudo apt install libssl-dev`  
-`sudo apt update`  
+```
+sudo apt install build-essential 
+sudo apt install pkg-config
+sudo apt install libssl-dev
+sudo apt update  
+```
 
 ## Installing the Streams Gateway
 
 Get the Streams WiFi Gateway repository
 
-`git clone https://github.com/iot2tangle/Streams-http-gateway`
+```
+git clone https://github.com/iot2tangle/Streams-http-gateway
+```
 
 Navigate to the **Streams-wifi-gateway** directory and edit the **config.json** file to define your device name (it must match what you set on the Sense Hat config).
 There you can also change ports and the IOTA Full Node used.  
@@ -105,7 +113,9 @@ There you can also change ports and the IOTA Full Node used.
 
 Run the Streams Gateway:  
 
-`cargo run --release`  
+```
+cargo run --release
+```
 
 This will compile and start the Streams Gateway. Note that the compilation process may take from 3 to 30 minutes (Pi3 took us around 30 mins, Pi4 8 mins and VPS or desktop machines will generally compile under the 5 mins) depending on the device you are using as host.
 
@@ -118,7 +128,9 @@ You will only go through the compilation once and any restart done later will ta
 
 In a separate console start a subscriber using the Channel Id printed by the Gateway (see example above):  
 
-`cargo run --release --example subscriber <your_channel_root> `  
+```
+cargo run --release --example subscriber <your_channel_root>  
+```
 
 ![Streams Gateway receiving SenseHat data](https://iot2tangle.io/assets/screenshots/PiSenseHatGet.png)
 
@@ -127,8 +139,8 @@ In a separate console start a subscriber using the Channel Id printed by the Gat
 
 To send data to the server you can use Postman, or like in this case cURL, make sure the port is the same as in the config.json file:  
 
-`  
-curl --location --request POST '127.0.0.1:8080/sensor_data'   
+```
+curl --location --request POST '127.0.0.1:8080/sensor_data'  
 --header 'Content-Type: application/json'   
 --data-raw '{
     "iot2tangle": [
@@ -157,8 +169,8 @@ curl --location --request POST '127.0.0.1:8080/sensor_data'
     ],  
     "device": "PI3SH",  
     "timestamp": "1558511111"  
-}'  
-`   
+}'
+```   
 
 IMPORTANT: The device will be authenticated through the **device id** field in the request (in this case PISH), this has to match what was set as device_name in the config.json on the Gateway (see Configuration section above)!  
   
