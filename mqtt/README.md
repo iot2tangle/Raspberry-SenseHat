@@ -69,11 +69,11 @@ Note that to connect to a MQTT Broker in Python you will have to install the Pah
 
 Install Paho: 
 
-`sudo pip install paho-mqtt`
+```sudo pip install paho-mqtt```
 
 And run the MQTT sender:
 
-`python mqtt.py`
+```python mqtt.py```
 
 # Setting up the Streams Gateway
 
@@ -81,20 +81,24 @@ And run the MQTT sender:
 
 Install Rust if you don't have it already. More info about Rust here https://www.rust-lang.org/tools/install
 
-`curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
+```curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh```
 
 Make sure you also have the build dependencies installed, if not run:  
 
-`sudo apt install build-essential`  
-`sudo apt install pkg-config`  
-`sudo apt install libssl-dev`  
-`sudo apt update`  
+```
+sudo apt install build-essential`  
+sudo apt install pkg-config`  
+sudo apt install libssl-dev`  
+sudo apt update`  
+```
 
 ## Installing the Streams Gateway
 
 Get the Streams WiFi Gateway repository
 
-`git clone https://github.com/iot2tangle/Streams-mqtt-gateway`
+```
+git clone https://github.com/iot2tangle/Streams-mqtt-gateway`
+```
 
 Navigate to the **Streams-wifi-gateway** directory and edit the **config.json** file to define your device name (it must match what you set on the Sense Hat config).
 There you can also change ports and the IOTA Full Node used.  
@@ -123,7 +127,9 @@ There you can also change ports and the IOTA Full Node used.
 
 Run the Streams Gateway:  
 
-`cargo run --release`  
+```
+cargo run --release
+```
 
 This will compile and start the Streams Gateway. Note that the compilation process may take from 3 to 30 minutes (Pi3 took us around 30 mins, Pi4 8 mins and VPS or desktop machines will generally compile under the 5 mins) depending on the device you are using as host.
 
@@ -136,7 +142,9 @@ You will only go through the compilation once and any restart done later will ta
 
 In a separate console start a subscriber using the Channel Id printed by the Gateway (see example above):  
 
-`cargo run --release --example subscriber <your_channel_root> `  
+```
+cargo run --release --example subscriber <your_channel_root> 
+```
 
 ![Streams Gateway receiving SenseHat data](https://iot2tangle.io/assets/screenshots/PiSenseHatGet.png)
 
