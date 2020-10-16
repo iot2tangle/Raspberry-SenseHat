@@ -1,4 +1,4 @@
-# Sense Hat on Raspberry Pi3/4
+# Sense Hat MQTT on Raspberry Pi3/4
 
 The Sense Hat is an add-on board for the Raspberry Pi, made especially for the Astro Pi competition. The board allows you to make measurements of temperature, humidity, pressure, and orientation (Gyroscope, Accelerometer, Magnetometer) and to output information using its built-in LED matrix.
 
@@ -37,13 +37,13 @@ We will clone this repository to get the Python and Rust code needed.
 git clone https://github.com/iot2tangle/Raspberry-SenseHat.git
 ```
 
-Head to the **Raspberry-SenseHat/http** directory and edit the **config.py** file to define your device name, which sensors you will use, the endpoint and interval.
-Here we will be using the Raspberry Pi to get the data from the Sense Hat sensors and also to send it to the Tangle so we use 127.0.0.1. 
+Head to the **Raspberry-SenseHat/mqtt** directory and edit the **config.py** file to define your device name, which sensors you will use, the MQTT Broker and authentification data. Here we will be using the Raspberry Pi to get the data from the Sense Hat sensors, send it to a Broker, get it back from the Broker and send it to the Tangle.
+
 Note that you could change this to point to a remote server running the Rust server.
 
 ```
 # Device name
-device_id = 'PISH'
+device_id = 'SENSEHAT'
 
 # Select sensors to use 1 = use | 0 = skip
 enviromental = 1
@@ -52,17 +52,20 @@ accelerometer = 1
 magnetometer = 1
 
 # Select relay interval
-relay = 30
+relay = 5
 
-# Define endpoint
-endpoint = 'http://127.0.0.1:8080/sensor_data'
+broker_address= 'your-mqtt-broker-server'
+port = 8883
+user = 'mqtt-user'
+password = 'mqtt-pass'
+topic = 'your-mqtt-topic'
 ```
 
-**IMPORTANT:** remember the device_id you set here, it will have to match the one we will set later on the Rust server.
+**IMPORTANT:** remember the device_id you set here! It will have to match the one we will set later on the Rust server.
 
-Save the config file and run the Python server in charge of getting the sensors information and send them to the Streams Gateway
+Save the config file and run the Python mqtt publisher in charge of getting the sensors information and send them to the Streams Gateway through a MQTT Broker.
 
-`python server.py`
+`python mqtt.py`
 
 # Setting up the Streams Gateway
 
@@ -83,7 +86,7 @@ Make sure you also have the build dependencies installed, if not run:
 
 Get the Streams WiFi Gateway repository
 
-`git clone https://github.com/iot2tangle/Streams-http-gateway`
+`git clone https://github.com/iot2tangle/Streams-mqtt-gateway`
 
 Navigate to the **Streams-wifi-gateway** directory and edit the **config.json** file to define your device name (it must match what you set on the Sense Hat config).
 There you can also change ports and the IOTA Full Node used.  
@@ -91,11 +94,18 @@ There you can also change ports and the IOTA Full Node used.
   
 ```
 {
-    "device_name": "PISH", 
-    "port": 8080, 
-    "node": "https://nodes.iota.cafe:443", 
-    "mwm": 14,    
-    "local_pow": false     
+    "whitelisted_device_ids": [
+        "SENSEHAT",
+        "DEVICE_ID_2"
+    ],
+    "username": "your-mqtt-user",
+    "password": "your-mqtt-password",
+    "broker_ip": "your-mqtt-server",
+    "broker_port": mqtt-port,
+    "topic": "mqtt-topic",
+    "node": "https://nodes.iota.cafe:443",
+    "mwm": 14,
+    "local_pow": false
 }
 ```
 
