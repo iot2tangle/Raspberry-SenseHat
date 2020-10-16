@@ -65,15 +65,19 @@ topic = 'your-mqtt-topic'
 
 Save the config file and run the Python mqtt publisher in charge of getting the sensors information and send them to the Streams Gateway through a MQTT Broker.
 
-Note that to connect to a MQTT Broker in Python you will have to install the Paho library. 
+Note that to connect to a MQTT Broker in Python you will have to install the Paho-mqtt library. 
 
 Install Paho: 
 
-```sudo pip install paho-mqtt```
+```
+sudo pip install paho-mqtt
+```
 
 And run the MQTT sender:
 
-```python mqtt.py```
+```
+python mqtt.py
+```
 
 # Setting up the Streams Gateway
 
@@ -148,43 +152,6 @@ cargo run --release --example subscriber <your_channel_root>
 
 ![Streams Gateway receiving SenseHat data](https://iot2tangle.io/assets/screenshots/PiSenseHatGet.png)
 
-
-### Testing without sensors
-
-To send data to the server you can use Postman, or like in this case cURL, make sure the port is the same as in the config.json file:  
-
-`  
-curl --location --request POST '127.0.0.1:8080/sensor_data'   
---header 'Content-Type: application/json'   
---data-raw '{
-    "iot2tangle": [
-        {
-            "sensor": "Gyroscope",
-            "data": [
-                {
-                    "x": "4514"
-                },
-                {
-                    "y": "244"
-                },
-                {
-                    "z": "-1830"
-                }
-            ]
-        },
-        {
-            "sensor": "Acoustic",
-            "data": [
-                {
-                    "mp": "1"
-                }
-            ]
-        }
-    ],  
-    "device": "PI3SH",  
-    "timestamp": "1558511111"  
-}'  
-`   
 
 IMPORTANT: The device will be authenticated through the **device id** field in the request (in this case PISH), this has to match what was set as device_name in the config.json on the Gateway (see Configuration section above)!  
   
