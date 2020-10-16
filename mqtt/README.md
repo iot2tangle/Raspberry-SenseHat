@@ -65,6 +65,14 @@ topic = 'your-mqtt-topic'
 
 Save the config file and run the Python mqtt publisher in charge of getting the sensors information and send them to the Streams Gateway through a MQTT Broker.
 
+Note that to connect to a MQTT Broker in Python you will have to install the Paho library. 
+
+Install Paho: 
+
+`sudo pip install paho-mqtt`
+
+And run the MQTT sender:
+
 `python mqtt.py`
 
 # Setting up the Streams Gateway
