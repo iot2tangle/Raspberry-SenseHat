@@ -140,7 +140,7 @@ cargo run --release --example subscriber <your_channel_root>
 To send data to the server you can use Postman, or like in this case cURL, make sure the port is the same as in the config.json file:  
 
 ```
-curl --location --request POST '127.0.0.1:8080/sensor_data'   
+curl --location --request POST '127.0.0.1:8080/sensor_data'  
 --header 'Content-Type: application/json'   
 --data-raw '{
     "iot2tangle": [
@@ -169,7 +169,7 @@ curl --location --request POST '127.0.0.1:8080/sensor_data'
     ],  
     "device": "PI3SH",  
     "timestamp": "1558511111"  
-}'  
+}'
 ```   
 
 IMPORTANT: The device will be authenticated through the **device id** field in the request (in this case PISH), this has to match what was set as device_name in the config.json on the Gateway (see Configuration section above)!  
