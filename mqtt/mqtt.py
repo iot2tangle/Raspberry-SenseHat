@@ -13,33 +13,31 @@ def on_connect(client, userdata, flags, rc):
  
     if rc == 0:
  
-        print("Connected to broker")
+        print("Connected to MQTT Broker")
  
-        global Connected                #Use global variable
-        Connected = True                #Signal connection 
+        global Connected               
+        Connected = True                
  
     else:
  
-        print("Connection failed")
+        print("Connection to the MQTT Broker failed")
  
-Connected = False   #global variable for the state of the connection
+Connected = False   
  
  
-client = mqttClient.Client("Python")               #create new instance
-client.username_pw_set(config.user, password=config.password)    #set username and password
-client.on_connect= on_connect                      #attach function to callback
-client.connect(config.broker_address, port=config.port)          #connect to broker
+client = mqttClient.Client("Python")              
+client.username_pw_set(config.user, password=config.password)   
+client.on_connect= on_connect                    
+client.connect(config.broker_address, port=config.port)          
  
-client.loop_start()        #start the loop
+client.loop_start()       
  
-while Connected != True:    #Wait for connection
+while Connected != True:   
     time.sleep(0.1)
  
 try:
     while True:
-        #import server as sensors
-        #include('server.py')
-        
+     
         # Get Unix timestamp
         timestamp = int(time.time())
 
@@ -91,10 +89,6 @@ try:
 
         # Json close
         build_json += '],"device":"' + str(config.device_id) + '","timestamp":"'+str(timestamp)+'"}'
-
-
-        #headers = {"Content-Type": "application/json"}
-        #build_json = json.dumps(build_json)
         
         value = build_json
         client.publish(config.topic,value)
