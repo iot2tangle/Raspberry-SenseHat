@@ -11,3 +11,4 @@ The Sense Hat is an add-on board for the Raspberry Pi, made especially for the A
 
 ## Available connectivity
 - **[HTTP](https://github.com/iot2tangle/Raspberry-SenseHat/tree/main/http)** (WiFi will post a request with the data to a given server)
+- **[MQTT](https://github.com/iot2tangle/Raspberry-SenseHat/tree/main/mqtt)** (Data is sent and fetched from MQTT Broker prior to publish via Streams)
