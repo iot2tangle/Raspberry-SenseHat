@@ -92,10 +92,11 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 Make sure you also have the build dependencies installed, if not run:  
 
 ```
-sudo apt install build-essential`  
-sudo apt install pkg-config`  
-sudo apt install libssl-dev`  
-sudo apt update`  
+sudo apt install build-essential  
+sudo apt install pkg-config  
+sudo apt install libssl-dev  
+sudo apt install cmake
+sudo apt update  
 ```
 
 ## Installing the Streams Gateway
@@ -103,7 +104,7 @@ sudo apt update`
 Get the Streams WiFi Gateway repository
 
 ```
-git clone https://github.com/iot2tangle/Streams-mqtt-gateway`
+git clone https://github.com/iot2tangle/Streams-mqtt-gateway
 ```
 
 Navigate to the **Streams-wifi-gateway** directory and edit the **config.json** file to define your device name (it must match what you set on the Sense Hat config).
